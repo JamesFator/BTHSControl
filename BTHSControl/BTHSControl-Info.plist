@@ -25,6 +25,17 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2014 JamesFator. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
-	<string></string>
+	<string>BTHSControlPlugin</string>
+	<key>SIMBLTargetApplications</key>
+	<array>
+		<dict>
+			<key>BundleIdentifier</key>
+			<string>com.apple.AVRCPAgent</string>
+			<key>MaxBundleVersion</key>
+			<string>424</string>
+			<key>MinBundleVersion</key>
+			<string>423</string>
+		</dict>
+	</array>
 </dict>
 </plist>

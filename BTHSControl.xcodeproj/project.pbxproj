@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1A95DE9F19A6DFF400673E51 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A95DE9E19A6DFF400673E51 /* Cocoa.framework */; };
 		1A95DEA919A6DFF400673E51 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1A95DEA719A6DFF400673E51 /* InfoPlist.strings */; };
+		1A95DEB419A6E00C00673E51 /* BTHSControlPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A95DEB119A6E00C00673E51 /* BTHSControlPlugin.m */; };
+		1A95DEB519A6E00C00673E51 /* BTHSInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A95DEB319A6E00C00673E51 /* BTHSInterface.m */; };
+		1A95DEB719A6E0C700673E51 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A95DEB619A6E0C700673E51 /* IOKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +23,11 @@
 		1A95DEA619A6DFF400673E51 /* BTHSControl-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "BTHSControl-Info.plist"; sourceTree = "<group>"; };
 		1A95DEA819A6DFF400673E51 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1A95DEAA19A6DFF400673E51 /* BTHSControl-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BTHSControl-Prefix.pch"; sourceTree = "<group>"; };
+		1A95DEB019A6E00C00673E51 /* BTHSControlPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHSControlPlugin.h; sourceTree = "<group>"; };
+		1A95DEB119A6E00C00673E51 /* BTHSControlPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHSControlPlugin.m; sourceTree = "<group>"; };
+		1A95DEB219A6E00C00673E51 /* BTHSInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BTHSInterface.h; sourceTree = "<group>"; };
+		1A95DEB319A6E00C00673E51 /* BTHSInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BTHSInterface.m; sourceTree = "<group>"; };
+		1A95DEB619A6E0C700673E51 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +35,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A95DEB719A6E0C700673E51 /* IOKit.framework in Frameworks */,
 				1A95DE9F19A6DFF400673E51 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,6 +63,7 @@
 		1A95DE9D19A6DFF400673E51 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1A95DEB619A6E0C700673E51 /* IOKit.framework */,
 				1A95DE9E19A6DFF400673E51 /* Cocoa.framework */,
 				1A95DEA019A6DFF400673E51 /* Other Frameworks */,
 			);
@@ -73,6 +83,10 @@
 		1A95DEA419A6DFF400673E51 /* BTHSControl */ = {
 			isa = PBXGroup;
 			children = (
+				1A95DEB019A6E00C00673E51 /* BTHSControlPlugin.h */,
+				1A95DEB119A6E00C00673E51 /* BTHSControlPlugin.m */,
+				1A95DEB219A6E00C00673E51 /* BTHSInterface.h */,
+				1A95DEB319A6E00C00673E51 /* BTHSInterface.m */,
 				1A95DEA519A6DFF400673E51 /* Supporting Files */,
 			);
 			path = BTHSControl;
@@ -150,6 +164,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A95DEB419A6E00C00673E51 /* BTHSControlPlugin.m in Sources */,
+				1A95DEB519A6E00C00673E51 /* BTHSInterface.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
