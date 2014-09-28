@@ -72,12 +72,12 @@ static void HIDPostAuxKey( const UInt8 auxKeyCode )
 
 + (void)forward
 {
-    HIDPostAuxKey(NX_KEYTYPE_NEXT);
+    HIDPostAuxKey(NX_KEYTYPE_FAST);
 }
 
 + (void)back
 {
-    HIDPostAuxKey(NX_KEYTYPE_PREVIOUS);
+    HIDPostAuxKey(NX_KEYTYPE_REWIND);
 }
 
 @end
