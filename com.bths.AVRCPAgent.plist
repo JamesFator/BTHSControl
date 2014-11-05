@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Label</key>
+        <string>com.bths.AVRCPAgent</string>
+        <key>Description</key>
+        <string>Bluetooth Headset PlugIn</string>
+        <key>WorkingDirectory</key>
+        <string>/System/Library/CoreServices/AVRCPAgent</string>
+        <key>ProgramArguments</key>
+        <array>
+                <string>./AVRCPAgent</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>KeepAlive</key>
+        <true/>
+    </dict>
+</plist>

@@ -13,38 +13,75 @@
 @implementation NSObject (BTHSControlInterceptor)
 
 /**
- * Method we are injecting into the AVRCPAgent. This will allow us
- * to receive the AVR commands directly and handle them as we please.
- * @param command - _NSInlineData of the AVR command
+ * Replaces the handlePlayCommand method of the AVRCPAgent AppControl.
+ * Makes a call to the BTHSInterface requesting play.
+ * @param status - int value denoting whether this is a press or release
  */
-- (int)handleInterceptedAVRCommand:(id)command
+- (void)playCommand:(int)status
 {
-    const unsigned *tokenBytes = [command bytes];
-    NSString *hexToken = [[NSString stringWithFormat:@"%08x",
-                           ntohl(tokenBytes[1])]
-                          substringWithRange:NSMakeRange(4, 2)];
-    
-    if ([hexToken isEqualToString:@"44"] ||
-            [hexToken isEqualToString:@"64"] ||
-            [hexToken isEqualToString:@"46"]) {
+    if (status == 68) {
+        NSLog(@"BTHSCommand: Play Pressed");
         [BTHSInterface play];
-    } else if ([hexToken isEqualToString:@"4c"]) {
-        [BTHSInterface forward];
-    } else if ([hexToken isEqualToString:@"4b"]) {
-        [BTHSInterface back];
+    } else {
+        NSLog(@"BTHSCommand: Play Released");
     }
-    return 1;
+}
+
+/**
+ * Replaces the handleForwardsCommand method of the AVRCPAgent AppControl.
+ * Makes a call to the BTHSInterface requesting forward.
+ * @param status - int value denoting whether this is a press or release
+ */
+- (void)forwardCommand:(int)status
+{
+    if (status == 75) {
+        NSLog(@"BTHSCommand: Forward Pressed");
+        [BTHSInterface forward];
+    } else {
+        NSLog(@"BTHSCommand: Forward Released");
+    }
+}
+
+/**
+ * Replaces the handleBackwardsCommand method of the AVRCPAgent AppControl.
+ * Makes a call to the BTHSInterface requesting backward.
+ * @param status - int value denoting whether this is a press or release
+ */
+- (void)backwardCommand:(int)status
+{
+    if (status == 76) {
+        NSLog(@"BTHSCommand: Backward Pressed");
+        [BTHSInterface back];
+    } else {
+        NSLog(@"BTHSCommand: Backward Released");
+    }
+}
+
+/**
+ * Replaces the executeScript method of the AVRCPAgent AppControl.
+ * By doing nothing, we are preventing iTunes from opening when it is
+ * not open and a button on the headset is pressed.
+ * NOTE: This method could hypothetically make a similar AppleScript
+ * call, but to any preferred media application other than iTunes.
+ * @param arg - string of the AppleScript code to launch iTunes.
+ */
+- (void*)iTunesLaunch:(void*)arg
+{
+    return NULL;
 }
 
 @end
 
+
 #pragma mark - Bluetooth Headset Control Plugin
+
 
 @implementation BTHSControlPlugin
 
 /**
  * AVRCPAgent requires us to have this method even though we
  * don't do anything with it.
+ * @param delegate - reference to the delegate of this PlugIn
  */
 - (void)setDelegate:(id)delegate
 {
@@ -52,13 +89,13 @@
 }
 
 /**
- * Swaps out a classes' instance method for a custom override.
+ * Swaps out a class instance method for a custom override.
  * This allows us to redirect the AVR commands.
  * @param cls - Class to inject override method into
  * @param old - selector to the old method to replace
  * @param new - selector to the new method to use
  */
-+ (void)swizzleInstanceMethod:(Class)cls original:(SEL)old override:(SEL)new
++ (void)replaceInstanceMethod:(Class)cls original:(SEL)old override:(SEL)new
 {
 	Method original = class_getInstanceMethod(cls, old);
 	Method override = class_getInstanceMethod(cls, new);
@@ -77,22 +114,31 @@
 }
 
 /**
- * Method called by SIMBL once the application has started and all classes are
- * initialized. We're simply intercepting the AVR command that comes in from
- * the bluetooth headset and handling it ourself.
+ * Primary entry point for this plugin.
+ * We use this method to feed custom code into an existing class.
  */
 + (void)load
 {
-    Class cls;
+    // Swap out methods from AppControl with our custom methods
+    Class ac = NSClassFromString(@"AppControl");
     SEL old, new;
-    cls = NSClassFromString(@"BluetoothAVRCPAgent");
-    if (!cls) {
-        NSLog(@"Failed to install BTMonitorPlugin");
-        return;
-    }
-    old = NSSelectorFromString(@"handleIncomingAVRCommand:");
-    new = @selector(handleInterceptedAVRCommand:);
-    [BTHSControlPlugin swizzleInstanceMethod:cls original:old override:new];
+    
+    old = NSSelectorFromString(@"handlePlayCommand:");
+    new = @selector(playCommand:);
+    [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
+    
+    old = NSSelectorFromString(@"handleForwardsCommand:");
+    new = @selector(forwardCommand:);
+    [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
+    
+    old = NSSelectorFromString(@"handleBackwardsCommand:");
+    new = @selector(backwardCommand:);
+    [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
+    
+    old = NSSelectorFromString(@"executeScript:");
+    new = @selector(iTunesLaunch:);
+    [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
+    
     NSLog(@"BTHSControlPlugin installed");
 }
 
