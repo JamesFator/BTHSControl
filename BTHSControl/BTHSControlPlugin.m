@@ -28,6 +28,21 @@
 }
 
 /**
+ * Replaces the handlePauseCommand method of the AVRCPAgent AppControl.
+ * Makes a call to the BTHSInterface requesting play (default Mac keyboard has a play/pause key).
+ * @param status - int value denoting whether this is a press or release
+ */
+- (void)pauseCommand:(int)status
+{
+    if (status == 70) {
+        NSLog(@"BTHSCommand: Pause Pressed");
+        [BTHSInterface play];
+    } else {
+        NSLog(@"BTHSCommand: Pause Released");
+    }
+}
+
+/**
  * Replaces the handleForwardsCommand method of the AVRCPAgent AppControl.
  * Makes a call to the BTHSInterface requesting forward.
  * @param status - int value denoting whether this is a press or release
@@ -127,6 +142,10 @@
     new = @selector(playCommand:);
     [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
     
+    old = NSSelectorFromString(@"handlePauseCommand:");
+    new = @selector(pauseCommand:);
+    [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
+
     old = NSSelectorFromString(@"handleForwardsCommand:");
     new = @selector(forwardCommand:);
     [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
