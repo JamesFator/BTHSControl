@@ -1,0 +1,4 @@
+# ignore the build dir
+build/
+# path will be created when necessary by install script
+AVRCPAgent/PlugIns/
