@@ -85,6 +85,28 @@
     return NULL;
 }
 
+/**
+ * This method is injected into BluetoothAVRCPAgent, only to make a reference
+ * call to the original method. This allows us to become a middle man whenever
+ * the method parseNotifyCommand is called.
+ * The parseNOTIFY commands registers a notification for a device, meaning if
+ * we invoke the original method and it returns successful, then the headset
+ * is paired (for the most part) and this is where we can push a notification.
+ * @param cmd - notify command coming in
+ * @param data - data associated with the notify command.
+ */
+- (int)interceptNotifyCommand:(void*)cmd withData:(void*)data
+{
+    Class cls = NSClassFromString(@"BluetoothAVRCPAgent");
+    SEL inc = NSSelectorFromString(@"interceptNotifyCommand:withData:");
+    Method method = class_getInstanceMethod(cls, inc);
+    bool res = method_invoke([BTHSControlPlugin getDelegate], method, cmd, data);
+    if (res) {
+        [BTHSInterface postNotification:@"Bluetooth headset connected"];
+    }
+    return res;
+}
+
 @end
 
 
@@ -92,6 +114,21 @@
 
 
 @implementation BTHSControlPlugin
+
+
+#pragma mark BTHSControlInterceptor Accessors
+
+/**
+ * Static access to the BluetoothAVRCPAgent delegate. This is required by any
+ * BTHSControlInterceptor methods that are acting as a man in the middle.
+ * @return pointer to BluetoothAVRCPAgent instance
+ */
+static id btDelegate;
++ (id)getDelegate
+{
+    return btDelegate;
+}
+
 
 /**
  * AVRCPAgent requires us to have this method even though we
@@ -101,7 +138,11 @@
 - (void)setDelegate:(id)delegate
 {
     NSLog(@"Setting Delegate: %@", delegate);
+    btDelegate = delegate;
 }
+
+
+#pragma mark Runtime Reference Swizzling
 
 /**
  * Swaps out a class instance method for a custom override.
@@ -127,6 +168,9 @@
     }
     method_exchangeImplementations(original, override);
 }
+
+
+#pragma mark Plugin load point
 
 /**
  * Primary entry point for this plugin.
@@ -157,6 +201,12 @@
     old = NSSelectorFromString(@"executeScript:");
     new = @selector(iTunesLaunch:);
     [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
+    
+    // Intercept notify commands
+    Class ba = NSClassFromString(@"BluetoothAVRCPAgent");
+    old = NSSelectorFromString(@"parseNotifyCommand:withData:");
+    new = @selector(interceptNotifyCommand:withData:);
+    [BTHSControlPlugin replaceInstanceMethod:ba original:old override:new];
     
     NSLog(@"BTHSControlPlugin installed");
 }

@@ -10,6 +10,7 @@ on your headset as if they were the standard media keys on your keyboard.
 This allows you to control playing, pausing, and skipping tracks in
 programs such as Spotify, VLC, and many more!
 
+
 ## What is happening under the hood
 
 Up until OS X 10.9, there was a system app called AVRCPAgent which
@@ -28,16 +29,20 @@ code written to be more generic.
 Even though AVRCPAgent was removed in Yosemite, it is still functional
 and can act as a separate Bluetooth service.
 
+
+## Contributors
+
+[tverlaan](https://github.com/tverlaan)
+
+
 ## Tested Systems
 
 * OS X 10.10
 * OS X 10.9
+
 
 ## Installation
 
 1. Run install.sh
 2. Reboot computer
 
-## To Do
-
-* Test different Bluetooth headset devices

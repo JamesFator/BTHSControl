@@ -12,6 +12,15 @@ echo "Setting up LaunchAgent: com.bths.AVRCPAgent"
 cp ./com.bths.AVRCPAgent.plist /Library/LaunchAgents/
 chmod 755 /Library/LaunchAgents/com.bths.AVRCPAgent.plist
 
+# BTHSControl
+echo "Building plug-in: BTHSControl"
+xcodebuild -project BTHSControl.xcodeproj
+PLUGIN_DIR=./AVRCPAgent/PlugIns/
+if [ ! -d "$PLUGIN_DIR" ]; then
+    mkdir "$PLUGIN_DIR"
+fi
+cp -r ./build/Release/BTHSControl.bundle "$PLUGIN_DIR"
+
 # AVRCPAgent
 echo "Setting up Service: AVRCPAgent"
 cp -r ./AVRCPAgent /System/Library/CoreServices/

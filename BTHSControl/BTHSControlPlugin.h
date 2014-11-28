@@ -12,4 +12,8 @@
 
 @interface BTHSControlPlugin : NSObject
 
+@property (nonatomic, strong) BTHSInterface *interface;
+
++ (id)getDelegate;
+
 @end

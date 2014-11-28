@@ -10,7 +10,9 @@
 #import <IOKit/hidsystem/IOHIDLib.h>
 #import <IOKit/hidsystem/ev_keymap.h>
 
-@interface BTHSInterface : NSObject
+@interface BTHSInterface : NSObject<NSUserNotificationCenterDelegate>
+
++ (void)postNotification:(NSString*)message;
 
 + (void)play;
 + (void)forward;
