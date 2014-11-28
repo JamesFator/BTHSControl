@@ -88,23 +88,20 @@
 /**
  * This method is injected into BluetoothAVRCPAgent, only to make a reference
  * call to the original method. This allows us to become a middle man whenever
- * the method parseNotifyCommand is called.
- * The parseNOTIFY commands registers a notification for a device, meaning if
- * we invoke the original method and it returns successful, then the headset
- * is paired (for the most part) and this is where we can push a notification.
+ * the method parseStatusCommand is called.
  * @param cmd - notify command coming in
  * @param data - data associated with the notify command.
  */
-- (int)interceptNotifyCommand:(void*)cmd withData:(void*)data
+- (int)interceptStatusCommand:(void*)cmd withData:(void*)data
 {
     Class cls = NSClassFromString(@"BluetoothAVRCPAgent");
-    SEL inc = NSSelectorFromString(@"interceptNotifyCommand:withData:");
+    SEL inc = NSSelectorFromString(@"interceptStatusCommand:withData:");
     Method method = class_getInstanceMethod(cls, inc);
-    bool res = method_invoke([BTHSControlPlugin getDelegate], method, cmd, data);
-    if (res) {
-        [BTHSInterface postNotification:@"Bluetooth headset connected"];
-    }
-    return res;
+    // Invoke the original data
+    method_invoke([BTHSControlPlugin getDelegate], method, cmd, data);
+    // Post a notification to the NotificationCenter
+    [BTHSInterface notifyConnection];
+    return 1;
 }
 
 @end
@@ -202,10 +199,10 @@ static id btDelegate;
     new = @selector(iTunesLaunch:);
     [BTHSControlPlugin replaceInstanceMethod:ac original:old override:new];
     
-    // Intercept notify commands
+    // Intercept status commands
     Class ba = NSClassFromString(@"BluetoothAVRCPAgent");
-    old = NSSelectorFromString(@"parseNotifyCommand:withData:");
-    new = @selector(interceptNotifyCommand:withData:);
+    old = NSSelectorFromString(@"parseStatusCommand:withData:");
+    new = @selector(interceptStatusCommand:withData:);
     [BTHSControlPlugin replaceInstanceMethod:ba original:old override:new];
     
     NSLog(@"BTHSControlPlugin installed");

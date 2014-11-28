@@ -4,8 +4,6 @@
     <dict>
         <key>Label</key>
         <string>com.bths.AVRCPAgent</string>
-        <key>Description</key>
-        <string>Bluetooth Headset PlugIn</string>
         <key>WorkingDirectory</key>
         <string>/System/Library/CoreServices/AVRCPAgent</string>
         <key>ProgramArguments</key>

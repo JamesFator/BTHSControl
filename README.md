@@ -32,7 +32,7 @@ and can act as a separate Bluetooth service.
 
 ## Contributors
 
-[tverlaan](https://github.com/tverlaan)
+[Timmo Verlaan](https://github.com/tverlaan)
 
 
 ## Tested Systems
@@ -43,6 +43,6 @@ and can act as a separate Bluetooth service.
 
 ## Installation
 
-1. Run install.sh
-2. Reboot computer
-
+1. Disconnect Bluetooth device
+2. Run install.sh
+3. Reconnect Bluetooth device and test

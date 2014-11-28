@@ -13,6 +13,7 @@
 @interface BTHSInterface : NSObject<NSUserNotificationCenterDelegate>
 
 + (void)postNotification:(NSString*)message;
++ (void)notifyConnection;
 
 + (void)play;
 + (void)forward;

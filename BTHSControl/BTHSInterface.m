@@ -115,6 +115,21 @@ static void HIDPostAuxKey(const UInt8 auxKeyCode)
 }
 
 /**
+ * Static method dedicated to delivering a notification of the headset
+ * connecting. We're doing this because there may be some devices out there
+ * that submit Status commands more than I've seen.
+ */
++ (void)notifyConnection
+{
+    static BOOL alreadyAlerted;
+    if (!alreadyAlerted) {
+        // If we haven't sent this message out yet, do so
+        [BTHSInterface postNotification:@"Bluetooth headset connected"];
+        alreadyAlerted = YES;
+    }
+}
+
+/**
  * NotificationCenterDelegate method to ensure we display the notification.
  * Notifications can be turned off by setting this return to NO.
  * Later on, there may be some sort of preferences to dynamically set this.
