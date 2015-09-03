@@ -30,6 +30,21 @@ Even though AVRCPAgent was removed in Yosemite, it is still functional
 and can act as a separate Bluetooth service.
 
 
+## El Capitan (OS X 10.11)
+
+El Capitan introduced "System Integrity Protection", which means we no
+longer should be editing the /System/Library/CoreServices directory.
+I moved the service to /Library/Services/ and it seems to be working
+for me still. I'll keep an eye on it to ensure this is a stable move.
+
+
+## Upgrading OS X version
+
+If you upgrade your OS X system, you may need to re-install the
+service. I noticed this was an issue in OS X 10.11, so it may be
+an issue for other versions.
+
+
 ## Contributors
 
 [Timmo Verlaan](https://github.com/tverlaan)
@@ -37,6 +52,7 @@ and can act as a separate Bluetooth service.
 
 ## Tested Systems
 
+* OS X 10.11
 * OS X 10.10
 * OS X 10.9
 
@@ -44,5 +60,12 @@ and can act as a separate Bluetooth service.
 ## Installation
 
 1. Disconnect Bluetooth device
-2. Run install.sh
+2. Run "install.sh install"
 3. Reconnect Bluetooth device and test
+
+
+## Uninstalling
+
+1. If uninstalling the old version, run "install.sh uninstall old"
+2. If uninstalling the current version, run "install.sh uninstall"
+3. Disconnect Bluetooth device, then reconnect.

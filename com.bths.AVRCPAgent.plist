@@ -5,7 +5,7 @@
         <key>Label</key>
         <string>com.bths.AVRCPAgent</string>
         <key>WorkingDirectory</key>
-        <string>/System/Library/CoreServices/AVRCPAgent</string>
+        <string>/Library/Services/AVRCPAgent</string>
         <key>ProgramArguments</key>
         <array>
                 <string>./AVRCPAgent</string>
