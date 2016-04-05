@@ -69,10 +69,14 @@ an issue for other versions.
 
 If you don't have Xcode, a pre-built binary is provided and can be used
 by copying the PlugIns dir from prebuilt into the AVRCPAgent dir by running
-  cp -r ./prebuilt/PlugIns ./AVRCPAgent/
+
+    cp -r ./prebuilt/PlugIns ./AVRCPAgent/
+
 then running
-  ./install.sh install
-without performing the build. *NOTE* This is not recommended if you do have
+
+    ./install.sh install
+
+without performing the build. **NOTE** This is not recommended if you do have
 the ability to build yourself.
 
 
