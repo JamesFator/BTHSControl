@@ -10,6 +10,8 @@ AVRCPAGENTDIR="$SERVICESDIR/AVRCPAgent"
 LAUNCHAGENTDIR="/Library/LaunchAgents/"
 LAUNCHAGENTPLIST="$LAUNCHAGENTDIR/com.bths.AVRCPAgent.plist"
 
+PLUGIN_DIR="./AVRCPAgent/PlugIns/"
+
 launchctlUnload () {
     # If the launchagent can't be found it returns an error but it
     # isn't necessarily wrong. Ignore errors for this line only.
@@ -22,8 +24,8 @@ launchctlUnload () {
     fi
 }
 
-install () {
-    echo "Installing"
+build () {
+    echo "Building"
 
     # Any commands that fail will cause the script to fail.
     set -e
@@ -31,11 +33,23 @@ install () {
     # BTHSControl
     echo "Building plug-in: BTHSControl"
     xcodebuild -project BTHSControl.xcodeproj
-    PLUGIN_DIR=./AVRCPAgent/PlugIns/
     if [ ! -d "$PLUGIN_DIR" ]; then
         mkdir "$PLUGIN_DIR"
     fi
     cp -r ./build/Release/BTHSControl.bundle "$PLUGIN_DIR"
+}
+
+install () {
+    echo "Installing"
+
+    # Any commands that fail will cause the script to fail.
+    set -e
+
+    # Check that plug-in dir exists
+    if [ ! -d "$PLUGIN_DIR" ]; then
+        echo "No plug-in found. Must run with './install.sh build' first."
+        return
+    fi
 
     # AVRCPAgent
     echo "Setting up Service: AVRCPAgent"
@@ -73,7 +87,7 @@ uninstall () {
 }
 
 printUsage () {
-    echo "Usage $0 [install|uninstall]"
+    echo "Usage $0 [build|install|uninstall]"
     exit
 }
 
@@ -83,9 +97,14 @@ if [[ $( sudo sh -c 'echo $EUID' ) != 0 ]]; then
     exit
 fi
 
-if [ $# -eq 0 ] || ( [ $1 != "install" ] && [ $1 != "uninstall" ] )
+if [ $# -eq 0 ] || ( [ $1 != "build" ] &&
+                     [ $1 != "install" ] &&
+                     [ $1 != "uninstall" ] )
 then
     printUsage
+elif [ $1 == "build" ]
+then
+    build
 elif [ $1 == "install" ]
 then
     install

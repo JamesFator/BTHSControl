@@ -60,8 +60,20 @@ an issue for other versions.
 ## Installation
 
 1. Disconnect Bluetooth device
-2. Run "install.sh install"
-3. Reconnect Bluetooth device and test
+2. Run "./install.sh build"
+3. Run "./install.sh install"
+4. Reconnect Bluetooth device and test
+
+
+## Pre-Built plug-in
+
+If you don't have Xcode, a pre-built binary is provided and can be used
+by copying the PlugIns dir from prebuilt into the AVRCPAgent dir by running
+  cp -r ./prebuilt/PlugIns ./AVRCPAgent/
+then running
+  ./install.sh install
+without performing the build. *NOTE* This is not recommended if you do have
+the ability to build yourself.
 
 
 ## Uninstalling
